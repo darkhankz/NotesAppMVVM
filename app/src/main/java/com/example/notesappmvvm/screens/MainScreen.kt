@@ -3,10 +3,13 @@ package com.example.notesappmvvm.screens
 import android.app.Application
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,7 +28,8 @@ import com.example.notesappmvvm.ui.MainViewModelFactory
 import com.example.notesappmvvm.ui.theme.NotesAppMVVMTheme
 
 @Composable
-fun MainScreen(navController: NavHostController) {
+fun MainScreen(navController: NavHostController, viewModel: MainViewModel) {
+    val notes = viewModel.readAllNotes().observeAsState(listOf()).value
     val context = LocalContext.current
     val mViewModel: MainViewModel =
         viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
@@ -38,7 +42,10 @@ fun MainScreen(navController: NavHostController) {
 
         }
     } ) {
-        it
+        LazyColumn{
+            items(notes){note -> NoteItem(note = note, it = it, navController = navController)
+            }
+        }
     }
 }
 
@@ -75,7 +82,9 @@ private fun NoteItem(note: Note,
 @Composable
 fun PrevMainScreen(){
     NotesAppMVVMTheme {
-        MainScreen(navController = rememberNavController())
-        
+        val context = LocalContext.current
+        val mViewModel: MainViewModel =
+            viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
+        MainScreen(navController = rememberNavController(), viewModel = mViewModel)
     }
 }
