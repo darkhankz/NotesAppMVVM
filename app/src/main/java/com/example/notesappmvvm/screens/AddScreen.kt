@@ -23,14 +23,15 @@ import com.example.notesappmvvm.ui.theme.NotesAppMVVMTheme
 
 @Composable
 fun AddScreen(navController: NavHostController) {
-    var title by remember{(mutableStateOf(""))}
-    var subtitle by remember{(mutableStateOf(""))}
+    var title by remember { (mutableStateOf("")) }
+    var subtitle by remember { (mutableStateOf("")) }
 
 
     Scaffold {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(it),
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -43,31 +44,30 @@ fun AddScreen(navController: NavHostController) {
 
             OutlinedTextField(
                 value = title,
-                onValueChange = {title = it},
-                label = { Text(text = "Not title")}
+                onValueChange = { title = it },
+                label = { Text(text = "Not title") }
             )
 
             OutlinedTextField(
                 value = subtitle,
-                onValueChange = {subtitle = it},
-                label = { Text(text = "Not subtitle")}
+                onValueChange = { subtitle = it },
+                label = { Text(text = "Not subtitle") }
             )
 
             Button(
                 modifier = Modifier.padding(16.dp),
                 onClick = {
                     navController.navigate(NavRoute.Main.rout)
-            }) {
+                }) {
                 Text(text = "Add note")
-
             }
-
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
-fun PrevAddScreen(){
+fun PrevAddScreen() {
     NotesAppMVVMTheme {
         AddScreen(navController = rememberNavController())
     }
