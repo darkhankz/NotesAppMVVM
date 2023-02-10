@@ -22,10 +22,7 @@ import com.example.notesappmvvm.utils.TYPE_FIREBASE
 import com.example.notesappmvvm.utils.TYPE_ROOM
 
 @Composable
-fun StartScreen(navController: NavHostController) {
-    val context = LocalContext.current
-    val mViewModel: MainViewModel =
-        viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
+fun StartScreen(navController: NavHostController, viewModel: MainViewModel) {
     Scaffold(
         Modifier.fillMaxSize()
     ) {
@@ -39,7 +36,7 @@ fun StartScreen(navController: NavHostController) {
             Text(text = "What will we use")
             Button(
                 onClick = {
-                    mViewModel.initDatabase(TYPE_ROOM){
+                    viewModel.initDatabase(TYPE_ROOM){
                         navController.navigate(route = NavRoute.Main.rout)
                     }
                           },
@@ -52,7 +49,7 @@ fun StartScreen(navController: NavHostController) {
 
             Button(
                 onClick = {
-                    mViewModel.initDatabase(TYPE_FIREBASE){
+                    viewModel.initDatabase(TYPE_FIREBASE){
                         navController.navigate(route = NavRoute.Main.rout)
                     }
                 },
@@ -70,7 +67,11 @@ fun StartScreen(navController: NavHostController) {
 @Composable
 fun PrevStartScreen(){
     NotesAppMVVMTheme {
-        StartScreen(navController = rememberNavController() )
+        val context = LocalContext.current
+        val mViewModel: MainViewModel =
+            viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
+
+        StartScreen(navController = rememberNavController(), viewModel = mViewModel )
     }
     
 }
