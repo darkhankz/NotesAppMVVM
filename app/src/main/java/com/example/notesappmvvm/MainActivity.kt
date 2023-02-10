@@ -22,28 +22,27 @@ class MainActivity : ComponentActivity() {
             NotesAppMVVMTheme {
                 Scaffold(
                     topBar = {
-                             TopAppBar(
-                                 title = {
-                                 Text(text = "Notes App")
-                             },
-                                 backgroundColor = Color.Blue,
-                                 contentColor = Color.White,
-                                 elevation = 12.dp
+                        TopAppBar(
+                            title = {
+                                Text(text = "Notes App")
+                            },
+                            backgroundColor = Color.Blue,
+                            contentColor = Color.White,
+                            elevation = 12.dp
 
-                                 )
-                             },
+                        )
+                    },
 
                     content = {
                         Surface(
-                            modifier = Modifier.fillMaxSize().padding(it),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(it),
                             color = MaterialTheme.colors.background
                         ) {
                             NotesNavHost()
                         }
                     }
-
-
-
                 )
             }
         }
