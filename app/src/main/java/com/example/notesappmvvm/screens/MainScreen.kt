@@ -1,6 +1,7 @@
 package com.example.notesappmvvm.screens
 
 import android.app.Application
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,6 +27,7 @@ import com.example.notesappmvvm.navigation.NavRoute
 import com.example.notesappmvvm.ui.MainViewModel
 import com.example.notesappmvvm.ui.MainViewModelFactory
 import com.example.notesappmvvm.ui.theme.NotesAppMVVMTheme
+import com.example.notesappmvvm.utils.Constants.Keys.ADD_ICON
 
 @Composable
 fun MainScreen(navController: NavHostController, viewModel: MainViewModel) {
@@ -38,28 +40,34 @@ fun MainScreen(navController: NavHostController, viewModel: MainViewModel) {
         FloatingActionButton(onClick = {
             navController.navigate(NavRoute.Add.rout)
         }) {
-            Icon(imageVector = Icons.Filled.Add , contentDescription = "Add Icons", tint = Color.White)
+            Icon(imageVector = Icons.Filled.Add, contentDescription = ADD_ICON, tint = Color.White)
 
         }
-    } ) {
-        LazyColumn{
-            items(notes){note -> NoteItem(note = note, it = it, navController = navController)
+    }) {
+        LazyColumn {
+            items(notes) { note ->
+                NoteItem(note = note, it = it, navController = navController)
             }
         }
     }
 }
 
 @Composable
-private fun NoteItem(note: Note,
-                     it: PaddingValues,
-                     navController: NavHostController
+private fun NoteItem(
+    note: Note,
+    it: PaddingValues,
+    navController: NavHostController
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(it)
             .clickable {
-                navController.navigate(NavRoute.Note.rout)
+                if (note.id != null) {
+                    println("Navigating to note with ID: ${note.id}")
+                    navController.navigate(NavRoute.Note.rout + "/${note.id}")
+                }
+                else println("error")
             },
         elevation = 6.dp
     ) {
@@ -80,7 +88,7 @@ private fun NoteItem(note: Note,
 
 @Preview(showBackground = true)
 @Composable
-fun PrevMainScreen(){
+fun PrevMainScreen() {
     NotesAppMVVMTheme {
         val context = LocalContext.current
         val mViewModel: MainViewModel =

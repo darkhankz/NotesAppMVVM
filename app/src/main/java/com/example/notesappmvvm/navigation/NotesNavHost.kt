@@ -9,12 +9,17 @@ import com.example.notesappmvvm.screens.MainScreen
 import com.example.notesappmvvm.screens.NoteScreen
 import com.example.notesappmvvm.screens.StartScreen
 import com.example.notesappmvvm.ui.MainViewModel
+import com.example.notesappmvvm.utils.Constants.Keys.ID
+import com.example.notesappmvvm.utils.Constants.Screens.ADD_SCREEN
+import com.example.notesappmvvm.utils.Constants.Screens.MAIN_SCREEN
+import com.example.notesappmvvm.utils.Constants.Screens.NOTE_SCREEN
+import com.example.notesappmvvm.utils.Constants.Screens.START_SCREEN
 
 sealed class NavRoute(val rout : String){
-    object Start: NavRoute("start_screen")
-    object Main: NavRoute("main_screen")
-    object Add: NavRoute("add_screen")
-    object Note: NavRoute("note_screen")
+    object Start: NavRoute(START_SCREEN)
+    object Main: NavRoute(MAIN_SCREEN)
+    object Add: NavRoute(ADD_SCREEN)
+    object Note: NavRoute(NOTE_SCREEN)
 
 }
 
@@ -26,6 +31,8 @@ fun NotesNavHost(mViewModel: MainViewModel) {
         composable(NavRoute.Start.rout){ StartScreen(navController = navController, viewModel = mViewModel) }
         composable(NavRoute.Main.rout){ MainScreen(navController = navController, viewModel = mViewModel) }
         composable(NavRoute.Add.rout){ AddScreen(navController = navController, viewModel = mViewModel) }
-        composable(NavRoute.Note.rout){ NoteScreen(navController = navController, viewModel = mViewModel) }
-    }
+        composable(NavRoute.Note.rout + "/{${ID}}") { backStackEntry ->
+             NoteScreen(navController = navController, viewModel = mViewModel, nodeId = backStackEntry.arguments?.getString(ID)) }
+        }
+
 }

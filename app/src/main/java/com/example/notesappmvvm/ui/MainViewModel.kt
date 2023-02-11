@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.notesappmvvm.database.AppRoomDatabase
 import com.example.notesappmvvm.database.room.repository.RoomRepository
 import com.example.notesappmvvm.model.Note
+import com.example.notesappmvvm.utils.Constants.Keys.UNKNOWN_VIEW_MODEL_CLASS
 import com.example.notesappmvvm.utils.REPOSITORY
 import com.example.notesappmvvm.utils.TYPE_ROOM
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +41,26 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
+    fun updateNote(note: Note, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            REPOSITORY.update(note = note){
+                viewModelScope.launch(Dispatchers.Main){
+                    onSuccess()
+                }
+            }
+        }
+    }
+
+    fun deleteNote(note: Note, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            REPOSITORY.delete(note = note){
+                viewModelScope.launch(Dispatchers.Main){
+                    onSuccess()
+                }
+            }
+        }
+    }
+
     fun readAllNotes() = REPOSITORY.readAll
 
 }
@@ -51,7 +72,7 @@ class MainViewModelFactory(
         if(modelClass.isAssignableFrom(MainViewModel::class.java)){
          return MainViewModel(application = application) as T
         }
-        throw IllegalArgumentException("Unknown ViewModel Class")
+        throw IllegalArgumentException(UNKNOWN_VIEW_MODEL_CLASS)
     }
 
 }
