@@ -25,11 +25,17 @@ import com.example.notesappmvvm.navigation.NavRoute
 import com.example.notesappmvvm.ui.MainViewModel
 import com.example.notesappmvvm.ui.MainViewModelFactory
 import com.example.notesappmvvm.ui.theme.NotesAppMVVMTheme
+import com.example.notesappmvvm.utils.Constants.Keys.ADD_NEW_NOTE
+import com.example.notesappmvvm.utils.Constants.Keys.ADD_NOTE
+import com.example.notesappmvvm.utils.Constants.Keys.EMPTY_STRING
+import com.example.notesappmvvm.utils.Constants.Keys.NOTE_SUBTITLE
+import com.example.notesappmvvm.utils.Constants.Keys.NOTE_TITLE
+
 
 @Composable
 fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
-    var title by remember { (mutableStateOf("")) }
-    var subtitle by remember { (mutableStateOf("")) }
+    var title by remember { (mutableStateOf(EMPTY_STRING)) }
+    var subtitle by remember { (mutableStateOf(EMPTY_STRING)) }
     var isButtonEnabled by remember { (mutableStateOf(false)) }
 
     Scaffold {
@@ -41,7 +47,7 @@ fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Add new note",
+                text = ADD_NEW_NOTE,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(vertical = 18.dp)
@@ -53,7 +59,7 @@ fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
                     title = it
                     isButtonEnabled = title.isNotEmpty() && subtitle.isNotEmpty()
                 },
-                label = { Text(text = "Not title") },
+                label = { Text(text = NOTE_TITLE) },
                 isError = title.isEmpty()
             )
 
@@ -64,7 +70,7 @@ fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
                     isButtonEnabled = title.isNotEmpty() && subtitle.isNotEmpty()
 
                 },
-                label = { Text(text = "Not subtitle") },
+                label = { Text(text = NOTE_SUBTITLE) },
                 isError = subtitle.isEmpty()
 
             )
@@ -78,7 +84,7 @@ fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
 
                     }
                 }) {
-                Text(text = "Add note")
+                Text(text = ADD_NOTE)
             }
         }
     }
