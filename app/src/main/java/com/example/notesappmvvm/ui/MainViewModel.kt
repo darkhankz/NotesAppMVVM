@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.notesappmvvm.database.AppRoomDatabase
+import com.example.notesappmvvm.database.firebase.AppFirebaseRepository
 import com.example.notesappmvvm.database.room.repository.RoomRepository
 import com.example.notesappmvvm.model.Note
 import com.example.notesappmvvm.utils.Constants.Keys.UNKNOWN_VIEW_MODEL_CLASS
@@ -28,11 +29,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
             TYPE_FIREBASE -> {
                 Log.d("fire", "INIT TYPE_FIREBASE")
-//                REPOSITORY = AppFirebaseRepository()
-//                REPOSITORY.connectToDatabase(
-//                    { onSuccess() },
-//                    { Log.d("fire", "Error:${it}") }
-//                )
+                REPOSITORY = AppFirebaseRepository()
+                REPOSITORY.createUserWithEmailAndPassword(
+                    { onSuccess() },
+                    { Log.d("fire", "Error:${it}") }
+                )
             }
 
         }

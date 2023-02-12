@@ -15,5 +15,7 @@ interface DatabaseRepository {
     fun signOut() { }
 
     fun connectToDatabase(onSuccess: () -> Unit, onFail: (String) -> Unit){ }
+    fun createUserWithEmailAndPassword(onSuccess: () -> Unit, onFail: (String) -> Unit){
 
+    }
 }

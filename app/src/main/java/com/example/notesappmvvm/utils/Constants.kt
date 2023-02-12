@@ -5,6 +5,7 @@ import com.example.notesappmvvm.database.DatabaseRepository
 const val TYPE_DATABASE = "type_database"
 const val TYPE_ROOM = "type_room"
 const val TYPE_FIREBASE = "type_firebase"
+const val FIREBASE_ID = "firebaseId"
 lateinit var REPOSITORY: DatabaseRepository
 lateinit var LOGIN: String
 lateinit var PASSWORD: String
@@ -20,8 +21,8 @@ object Constants{
         const val ADD_NOTE = "Add note"
         const val EMPTY_STRING = ""
         const val ADD_ICON = "Add Icons"
-        const val TITLE = "Title"
-        const val SUBTITLE = "Subtitle"
+        const val TITLE = "title"
+        const val SUBTITLE = "subtitle"
         const val ROOM_DATABASE = "Room database"
         const val FIREBASE_DATABASE = "Firebase database"
         const val WHAT_WILL_WE_USE = "What will we use"

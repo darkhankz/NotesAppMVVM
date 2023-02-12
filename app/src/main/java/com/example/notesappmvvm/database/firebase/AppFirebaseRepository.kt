@@ -3,18 +3,36 @@ package com.example.notesappmvvm.database.firebase
 import androidx.lifecycle.LiveData
 import com.example.notesappmvvm.database.DatabaseRepository
 import com.example.notesappmvvm.model.Note
+import com.example.notesappmvvm.utils.Constants.Keys.SUBTITLE
+import com.example.notesappmvvm.utils.Constants.Keys.TITLE
+import com.example.notesappmvvm.utils.FIREBASE_ID
 import com.example.notesappmvvm.utils.LOGIN
 import com.example.notesappmvvm.utils.PASSWORD
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class AppFirebaseRepository : DatabaseRepository {
     private val mAuth = FirebaseAuth.getInstance()
 
+    private val database = Firebase.database.reference.child(
+        mAuth.currentUser?.uid.toString())
+
     override val readAll: LiveData<List<Note>>
-        get() = TODO("Not yet implemented")
+        get() = AllNotesLiveData()
 
     override suspend fun create(note: Note, onSuccess: () -> Unit) {
-        TODO("Not yet implemented")
+        val noteId = database.push().key.toString()
+        val mapNotes = hashMapOf<String, Any>()
+
+        mapNotes[FIREBASE_ID] = noteId
+        mapNotes[TITLE] = note.title
+        mapNotes[SUBTITLE] = note.subtitle
+
+        database.child(noteId)
+            .updateChildren(mapNotes)
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener{  }
     }
 
     override suspend fun update(note: Note, onSuccess: () -> Unit) {
@@ -36,6 +54,16 @@ class AppFirebaseRepository : DatabaseRepository {
                 mAuth.createUserWithEmailAndPassword(LOGIN, PASSWORD)
                     .addOnSuccessListener { onSuccess() }
                     .addOnFailureListener { onFail(it.message.toString()) }
+            }
+    }
+
+    override fun createUserWithEmailAndPassword(onSuccess: () -> Unit, onFail: (String) -> Unit) {
+        mAuth.createUserWithEmailAndPassword(LOGIN, PASSWORD)
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener {
+                onFail(it.message.toString())
             }
     }
 }
