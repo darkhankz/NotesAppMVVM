@@ -11,29 +11,38 @@ import com.example.notesappmvvm.database.room.repository.RoomRepository
 import com.example.notesappmvvm.model.Note
 import com.example.notesappmvvm.utils.Constants.Keys.UNKNOWN_VIEW_MODEL_CLASS
 import com.example.notesappmvvm.utils.REPOSITORY
+import com.example.notesappmvvm.utils.TYPE_FIREBASE
 import com.example.notesappmvvm.utils.TYPE_ROOM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainViewModel(application: Application): AndroidViewModel(application) {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val context = application
-    fun initDatabase(type: String, onSuccess: () -> Unit){
-        when(type){
+    fun initDatabase(type: String, onSuccess: () -> Unit) {
+        when (type) {
             TYPE_ROOM -> {
                 val dao = AppRoomDatabase.getInstance(context = context).getRoomDao()
                 REPOSITORY = RoomRepository(dao)
                 onSuccess()
+            }
+            TYPE_FIREBASE -> {
+                Log.d("fire", "INIT TYPE_FIREBASE")
+//                REPOSITORY = AppFirebaseRepository()
+//                REPOSITORY.connectToDatabase(
+//                    { onSuccess() },
+//                    { Log.d("fire", "Error:${it}") }
+//                )
             }
 
         }
         Log.d("checkData", "MainViewModel initDatabase with type: $type")
     }
 
-    fun addNote(note: Note, onSuccess: () -> Unit){
+    fun addNote(note: Note, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            REPOSITORY.create(note = note){
-                viewModelScope.launch(Dispatchers.Main){
+            REPOSITORY.create(note = note) {
+                viewModelScope.launch(Dispatchers.Main) {
                     onSuccess()
                 }
             }
@@ -43,8 +52,8 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
 
     fun updateNote(note: Note, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            REPOSITORY.update(note = note){
-                viewModelScope.launch(Dispatchers.Main){
+            REPOSITORY.update(note = note) {
+                viewModelScope.launch(Dispatchers.Main) {
                     onSuccess()
                 }
             }
@@ -53,8 +62,8 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
 
     fun deleteNote(note: Note, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            REPOSITORY.delete(note = note){
-                viewModelScope.launch(Dispatchers.Main){
+            REPOSITORY.delete(note = note) {
+                viewModelScope.launch(Dispatchers.Main) {
                     onSuccess()
                 }
             }
@@ -67,10 +76,10 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
 
 class MainViewModelFactory(
     private val application: Application
-    ): ViewModelProvider.Factory {
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if(modelClass.isAssignableFrom(MainViewModel::class.java)){
-         return MainViewModel(application = application) as T
+        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+            return MainViewModel(application = application) as T
         }
         throw IllegalArgumentException(UNKNOWN_VIEW_MODEL_CLASS)
     }
