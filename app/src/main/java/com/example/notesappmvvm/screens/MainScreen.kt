@@ -1,7 +1,6 @@
 package com.example.notesappmvvm.screens
 
 import android.app.Application
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -62,7 +61,7 @@ private fun NoteItem(
     it: PaddingValues,
     navController: NavHostController
 ) {
-    val noteId = when(DB_TYPE){
+    val noteId = when(DB_TYPE.value){
         TYPE_FIREBASE -> note.firebaseId
         TYPE_ROOM -> note.id
         else -> EMPTY_STRING

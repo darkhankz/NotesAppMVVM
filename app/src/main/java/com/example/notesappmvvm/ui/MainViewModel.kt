@@ -10,7 +10,9 @@ import com.example.notesappmvvm.database.AppRoomDatabase
 import com.example.notesappmvvm.database.firebase.AppFirebaseRepository
 import com.example.notesappmvvm.database.room.repository.RoomRepository
 import com.example.notesappmvvm.model.Note
+import com.example.notesappmvvm.utils.Constants.Keys.EMPTY_STRING
 import com.example.notesappmvvm.utils.Constants.Keys.UNKNOWN_VIEW_MODEL_CLASS
+import com.example.notesappmvvm.utils.DB_TYPE
 import com.example.notesappmvvm.utils.REPOSITORY
 import com.example.notesappmvvm.utils.TYPE_FIREBASE
 import com.example.notesappmvvm.utils.TYPE_ROOM
@@ -68,6 +70,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     onSuccess()
                 }
             }
+        }
+    }
+
+    fun signOut(onSuccess: () -> Unit){
+        when(DB_TYPE.value){
+            TYPE_FIREBASE,
+                TYPE_ROOM -> {
+                    REPOSITORY.signOut()
+                DB_TYPE.value = EMPTY_STRING
+                onSuccess()
+                }
+            else -> {}
         }
     }
 

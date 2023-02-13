@@ -25,7 +25,6 @@ import com.example.notesappmvvm.utils.Constants.Keys.DELETE
 import com.example.notesappmvvm.utils.Constants.Keys.EDIT_NOTE
 import com.example.notesappmvvm.utils.Constants.Keys.EMPTY_STRING
 import com.example.notesappmvvm.utils.Constants.Keys.NAV_BACK
-import com.example.notesappmvvm.utils.Constants.Keys.NONE
 import com.example.notesappmvvm.utils.Constants.Keys.SUBTITLE
 import com.example.notesappmvvm.utils.Constants.Keys.TITLE
 import com.example.notesappmvvm.utils.Constants.Keys.UPDATE
@@ -39,7 +38,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun NoteScreen(navController: NavHostController, viewModel: MainViewModel, nodeId: String?) {
     val notes = viewModel.readAllNotes().observeAsState(listOf()).value
-    val note = when(DB_TYPE){
+    val note = when(DB_TYPE.value){
         TYPE_ROOM -> {
             notes.firstOrNull{it.id == nodeId?.toInt()}?: Note()
         }
