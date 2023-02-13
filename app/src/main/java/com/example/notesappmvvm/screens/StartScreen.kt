@@ -19,7 +19,7 @@ import com.example.notesappmvvm.navigation.NavRoute
 import com.example.notesappmvvm.ui.MainViewModel
 import com.example.notesappmvvm.ui.MainViewModelFactory
 import com.example.notesappmvvm.ui.theme.NotesAppMVVMTheme
-import com.example.notesappmvvm.utils.Constants
+import com.example.notesappmvvm.utils.*
 import com.example.notesappmvvm.utils.Constants.Keys.FIREBASE_DATABASE
 import com.example.notesappmvvm.utils.Constants.Keys.LOGIN_TEXT
 import com.example.notesappmvvm.utils.Constants.Keys.LOG_IN
@@ -27,9 +27,6 @@ import com.example.notesappmvvm.utils.Constants.Keys.PASSWORD
 import com.example.notesappmvvm.utils.Constants.Keys.ROOM_DATABASE
 import com.example.notesappmvvm.utils.Constants.Keys.SIGN_IN
 import com.example.notesappmvvm.utils.Constants.Keys.WHAT_WILL_WE_USE
-import com.example.notesappmvvm.utils.LOGIN
-import com.example.notesappmvvm.utils.TYPE_FIREBASE
-import com.example.notesappmvvm.utils.TYPE_ROOM
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -78,6 +75,7 @@ fun StartScreen(navController: NavHostController, viewModel: MainViewModel) {
                             LOGIN = login
                             PASSWORD = password
                             viewModel.initDatabase(TYPE_FIREBASE){
+                                DB_TYPE = TYPE_FIREBASE
                                 navController.navigate(NavRoute.Main.rout)
                             }
                         },
@@ -103,6 +101,7 @@ fun StartScreen(navController: NavHostController, viewModel: MainViewModel) {
                 Button(
                     onClick = {
                         viewModel.initDatabase(TYPE_ROOM){
+                            DB_TYPE = TYPE_ROOM
                             navController.navigate(route = NavRoute.Main.rout)
                         }
                     },

@@ -28,6 +28,10 @@ import com.example.notesappmvvm.ui.MainViewModel
 import com.example.notesappmvvm.ui.MainViewModelFactory
 import com.example.notesappmvvm.ui.theme.NotesAppMVVMTheme
 import com.example.notesappmvvm.utils.Constants.Keys.ADD_ICON
+import com.example.notesappmvvm.utils.Constants.Keys.EMPTY_STRING
+import com.example.notesappmvvm.utils.DB_TYPE
+import com.example.notesappmvvm.utils.TYPE_FIREBASE
+import com.example.notesappmvvm.utils.TYPE_ROOM
 
 @Composable
 fun MainScreen(navController: NavHostController, viewModel: MainViewModel) {
@@ -58,16 +62,19 @@ private fun NoteItem(
     it: PaddingValues,
     navController: NavHostController
 ) {
+    val noteId = when(DB_TYPE){
+        TYPE_FIREBASE -> note.firebaseId
+        TYPE_ROOM -> note.id
+        else -> EMPTY_STRING
+    }
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(it)
             .clickable {
-                if (note.id != null) {
-                    println("Navigating to note with ID: ${note.id}")
-                    navController.navigate(NavRoute.Note.rout + "/${note.id}")
-                }
-                else println("error")
+                navController.navigate(NavRoute.Note.rout + "/${noteId}")
+                println("Navigating to note with ID: ${note.id}")
+
             },
         elevation = 6.dp
     ) {
